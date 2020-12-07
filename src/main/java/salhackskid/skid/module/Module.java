@@ -9,11 +9,18 @@ public class Module implements Listenable {
     protected MinecraftClient mc = MinecraftClient.getInstance();
 
     private boolean toggled = false;
+    private boolean hidden = false;
+    public String displayName;
 
     public void toggle() {
         toggled = !toggled;
         if (toggled) onEnable();
         else onDisable();
+    }
+
+    public String getDisplayName()
+    {
+        return displayName;
     }
 
     public boolean isToggled() {
@@ -42,4 +49,23 @@ public class Module implements Listenable {
             this_didnt_get_registered_hmm_weird.printStackTrace();
         }
     }
+
+    public boolean isHidden()
+    {
+        return hidden;
+    }
+
+    public void SignalValueChange(Value p_Val)
+    {
+        SaveSettings();
+    }
+
+    public void SaveSettings()
+    {
+        new Thread(() ->
+        {
+            PresetsManager.Get().getActivePreset().addModuleSettings(this);
+        }).start();
+    }
+
 }
