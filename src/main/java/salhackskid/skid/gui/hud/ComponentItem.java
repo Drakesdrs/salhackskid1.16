@@ -1,4 +1,4 @@
-package salhackskid.skid.settings.base;
+package salhackskid.skid.gui.hud;
 
 import java.util.ArrayList;
 
@@ -17,12 +17,12 @@ public class ComponentItem
     public static int Enum = 0x80;
     public static int DontDisplayClickableHighlight = 0x100;
     public static int RectDisplayOnClicked = 0x200;
-    
+
     /// State
     public static int Clicked = 0x1;
     public static int Hovered = 0x2;
     public static int Extended = 0x4;
-    
+
     private String DisplayText;
     private String Description;
     protected int Flags;
@@ -33,9 +33,9 @@ public class ComponentItem
     private float Width;
     private float Height;
     protected float CurrentWidth;
-    
+
     public ArrayList<ComponentItem> DropdownItems;
-    
+
     public ComponentItem(String p_DisplayText, String p_Description, int p_Flags, int p_State, ComponentItemListener p_Listener, float p_Width, float p_Height)
     {
         DisplayText = p_DisplayText;
@@ -43,41 +43,41 @@ public class ComponentItem
         Flags = p_Flags;
         State = p_State;
         Listener = p_Listener;
-        
+
         DropdownItems = new ArrayList<ComponentItem>();
-        
+
         X = 0;
         Y = 0;
         Width = p_Width;
         Height = p_Height;
         CurrentWidth = p_Width;
     }
-    
+
     public String GetDisplayText()
     {
         return DisplayText;
     }
-    
+
     public String GetDescription()
     {
         return Description;
     }
-    
+
     public boolean HasFlag(int p_Flag)
     {
         return (Flags & p_Flag) != 0;
     }
-    
+
     public boolean HasState(int p_State)
     {
         return (State & p_State) != 0;
     }
-    
+
     public void AddState(int p_State)
     {
         State |= p_State;
     }
-    
+
     public void RemoveState(int p_State)
     {
         State &= ~p_State;
@@ -122,7 +122,7 @@ public class ComponentItem
     {
         Height = height;
     }
-    
+
     public float GetCurrentWidth()
     {
         return CurrentWidth;
@@ -134,7 +134,7 @@ public class ComponentItem
         {
             if (Listener != null)
                 Listener.OnToggled();
-            
+
             if (HasState(Clicked))
                 RemoveState(Clicked);
             else
@@ -164,12 +164,12 @@ public class ComponentItem
     public void OnMouseRelease(int p_MouseX, int p_MouseY)
     {
         // TODO Auto-generated method stub
-        
+
     }
 
     public void OnMouseClickMove(int p_MouseX, int p_MouseY, int p_ClickedMouseButton)
     {
         // TODO Auto-generated method stub
-        
+
     }
 }

@@ -17,19 +17,10 @@ import org.lwjgl.opengl.GL11;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import me.ionar.salhack.gui.hud.GuiHudEditor;
-import me.ionar.salhack.gui.hud.HudComponentItem;
-import me.ionar.salhack.gui.hud.components.*;
-import me.ionar.salhack.main.SalHack;
-import me.ionar.salhack.main.Wrapper;
-import me.ionar.salhack.module.Value;
-import me.ionar.salhack.module.ValueListeners;
-import net.minecraft.client.gui.GuiScreen;
-import org.lwjgl.opengl.RenderTexture;
 import salhackskid.skid.SalHackSkid;
 import salhackskid.skid.gui.hud.HudComponentItem;
 import salhackskid.skid.module.Value;
-import scala.tools.nsc.backend.icode.Primitives;
+import salhackskid.skid.module.ValueListeners;
 
 public class HudManager
 {

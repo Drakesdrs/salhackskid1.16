@@ -1,15 +1,14 @@
-package me.ionar.salhack.managers;
+package salhackskid.skid.gui.managers;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import me.ionar.salhack.command.Command;
-import me.ionar.salhack.command.impl.*;
-import me.ionar.salhack.command.util.ModuleCommandListener;
-import me.ionar.salhack.main.SalHack;
-import me.ionar.salhack.module.Module;
+import salhackskid.skid.SalHackSkid;
+import salhackskid.skid.command.Command;
+import salhackskid.skid.command.ModuleCommandListener;
+import salhackskid.skid.module.ModuleCommand;
 import salhackskid.skid.module.ModuleManager;
 
 public class CommandManager
@@ -20,18 +19,18 @@ public class CommandManager
 
     public void InitalizeCommands()
     {
-        Commands.add(new FriendCommand());
-        Commands.add(new HelpCommand());
-        Commands.add(new SoundReloadCommand());
-        Commands.add(new HClipCommand());
-        Commands.add(new VClipCommand());
-        Commands.add(new ToggleCommand());
-        Commands.add(new BindCommand());
-        Commands.add(new UnbindCommand());
-        Commands.add(new ResetGUICommand());
-        Commands.add(new FontCommand());
-        Commands.add(new PresetsCommand());
-        Commands.add(new WaypointCommand());
+//        Commands.add(new FriendCommand());
+//        Commands.add(new HelpCommand());
+//        Commands.add(new SoundReloadCommand());
+//        Commands.add(new HClipCommand());
+//        Commands.add(new VClipCommand());
+//        Commands.add(new ToggleCommand());
+//        Commands.add(new BindCommand());
+//        Commands.add(new UnbindCommand());
+//        Commands.add(new ResetGUICommand());
+//        Commands.add(new FontCommand());
+//        Commands.add(new PresetsCommand());
+//        Commands.add(new WaypointCommand());
 
         ModuleManager.getModules().forEach(p_Mod ->
         {
@@ -105,7 +104,7 @@ public class CommandManager
 
     public static CommandManager Get()
     {
-        return SalHack.GetCommandManager();
+        return SalHackSkid.getCommandManager();
     }
 
     public Command GetCommandLike(String p_Like)

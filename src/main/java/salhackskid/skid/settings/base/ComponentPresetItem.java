@@ -1,14 +1,15 @@
-package me.ionar.salhack.gui.click.component.item;
+package salhackskid.skid.settings.base;
 
-import me.ionar.salhack.gui.click.component.listeners.ComponentItemListener;
-import me.ionar.salhack.preset.Preset;
+import salhackskid.skid.gui.hud.ComponentItem;
+import salhackskid.skid.managers.Preset;
+import salhackskid.skid.settings.listeners.ComponentItemListener;
 
 public class ComponentPresetItem extends ComponentItem
 {
     private Preset _preset;
 
     public ComponentPresetItem(Preset preset, int flags, int state, ComponentItemListener listener, float width,
-            float height)
+                               float height)
     {
         super(preset.getName(), "", flags, state, listener, width, height);
         

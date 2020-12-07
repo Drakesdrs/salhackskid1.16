@@ -8,6 +8,7 @@ import net.minecraft.text.Text;
 import salhackskid.skid.gui.managers.HudManager;
 import salhackskid.skid.module.Module;
 import salhackskid.skid.module.ModuleManager;
+import salhackskid.skid.gui.managers.CommandManager;
 
 public class SalHackSkid implements ModInitializer {
 
@@ -28,6 +29,10 @@ public class SalHackSkid implements ModInitializer {
 
     public static HudManager getHudManager() {
         return new HudManager();
+    }
+
+    public static CommandManager getCommandManager() {
+        return new CommandManager();
     }
 
     public static void SendMessage(String string)
