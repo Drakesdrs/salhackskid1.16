@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "salhackskid.skid.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+  ],
+  "client": [
+    "MixinClientPlayerEntity"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}
