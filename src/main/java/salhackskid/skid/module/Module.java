@@ -147,4 +147,18 @@ public class Module implements Listenable {
         this.onEnable();
     }
 
+    public void setKey(String key)
+    {
+        this.key = key;
+        SaveSettings();
+    }
+
+    public ModuleType getType() {
+        return type;
+    }
+
+    public void SignalEnumChange()
+    {
+    }
+
 }

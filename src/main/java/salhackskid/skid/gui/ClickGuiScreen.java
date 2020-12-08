@@ -12,35 +12,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import me.ionar.salhack.gui.click.component.MenuComponent;
-import org.lwjgl.input.Mouse;
+import com.mojang.blaze3d.platform.GlStateManager;
+import net.java.games.input.Mouse;
+import net.minecraft.client.util.math.MatrixStack;
 import org.lwjgl.opengl.GL11;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import me.ionar.salhack.gui.SalGuiScreen;
-import me.ionar.salhack.gui.click.component.*;
-import me.ionar.salhack.gui.click.component.menus.mods.MenuComponentModList;
-import me.ionar.salhack.gui.click.component.menus.mods.MenuComponentPresetsList;
-import me.ionar.salhack.gui.click.effects.Snow;
-import me.ionar.salhack.main.SalHack;
-import me.ionar.salhack.managers.ImageManager;
-import me.ionar.salhack.managers.PresetsManager;
-import me.ionar.salhack.module.Module.ModuleType;
-import me.ionar.salhack.module.ui.ClickGuiModule;
-import me.ionar.salhack.module.ui.ColorsModule;
-import me.ionar.salhack.util.imgs.SalDynamicTexture;
-import me.ionar.salhack.util.render.RenderUtil;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
+import salhackskid.skid.gui.hud.MenuComponentModList;
+import salhackskid.skid.managers.PresetsManager;
+import salhackskid.skid.module.Module;
+import salhackskid.skid.module.gui.ClickGuiModule;
+import salhackskid.skid.module.gui.ColorsModule;
+import salhackskid.skid.utils.MenuComponentPresetsList;
+import salhackskid.skid.utils.ScaledResolution;
+import salhackskid.skid.utils.Snow;
+import salhackskid.skid.gui.hud.MenuComponent;
 
 public class ClickGuiScreen extends SalGuiScreen
 {
     private ArrayList<MenuComponent> MenuComponents = new ArrayList<MenuComponent>();
-    private SalDynamicTexture Watermark = ImageManager.Get().GetDynamicTexture("SalHackWatermark");
-    private SalDynamicTexture BlueBlur = ImageManager.Get().GetDynamicTexture("BlueBlur");
     private ArrayList<Snow> _snowList = new ArrayList<Snow>();
 
     private float OffsetY = 0;
@@ -48,23 +40,23 @@ public class ClickGuiScreen extends SalGuiScreen
     public ClickGuiScreen(ClickGuiModule p_Mod, ColorsModule p_Colors)
     {
         // COMBAT, EXPLOIT, MOVEMENT, RENDER, WORLD, MISC, HIDDEN, UI
-        MenuComponents.add(new MenuComponentModList("Combat", ModuleType.COMBAT, 10, 3, "Shield", p_Colors, p_Mod));
-        MenuComponents.add(new MenuComponentModList("Exploit", ModuleType.EXPLOIT, 120, 3, "skull", p_Colors, p_Mod));
-        // MenuComponents.add(new MenuComponentModList("Hidden", ModuleType.HIDDEN, 320,
+        MenuComponents.add(new MenuComponentModList("Combat", Module.ModuleType.COMBAT, 10, 3, "Shield", p_Colors, p_Mod));
+        MenuComponents.add(new MenuComponentModList("Exploit", Module.ModuleType.EXPLOIT, 120, 3, "skull", p_Colors, p_Mod));
+        // MenuComponents.add(new MenuComponentModList("Hidden", Module.ModuleType.HIDDEN, 320,
         // 3));
-        MenuComponents.add(new MenuComponentModList("Misc", ModuleType.MISC, 230, 3, "questionmark", p_Colors, p_Mod));
-        MenuComponents.add(new MenuComponentModList("Movement", ModuleType.MOVEMENT, 340, 3, "Arrow", p_Colors, p_Mod));
-        MenuComponents.add(new MenuComponentModList("Render", ModuleType.RENDER, 450, 3, "Eye", p_Colors, p_Mod));
-        MenuComponents.add(new MenuComponentModList("UI", ModuleType.UI, 560, 3, "mouse", p_Colors, p_Mod));
-        MenuComponents.add(new MenuComponentModList("World", ModuleType.WORLD, 670, 3, "blockimg", p_Colors, p_Mod));
-        MenuComponents.add(new MenuComponentModList("Highway", ModuleType.HIGHWAY, 780, 3, "Highwayimg", p_Colors, p_Mod));
-        //   MenuComponents.add(new MenuComponentModList("Bot", ModuleType.BOT, 780, 3, "robotimg", p_Colors));
-        MenuComponents.add(new MenuComponentModList("Donate!", ModuleType.DONATE, 230, 203, "Highwayimg", p_Colors, p_Mod));
-        MenuComponents.add(new MenuComponentModList("Schematica", ModuleType.SCHEMATICA, 10, 203, "robotimg", p_Colors, p_Mod));
+        MenuComponents.add(new MenuComponentModList("Misc", Module.ModuleType.MISC, 230, 3, "questionmark", p_Colors, p_Mod));
+        MenuComponents.add(new MenuComponentModList("Movement", Module.ModuleType.MOVEMENT, 340, 3, "Arrow", p_Colors, p_Mod));
+        MenuComponents.add(new MenuComponentModList("Render", Module.ModuleType.RENDER, 450, 3, "Eye", p_Colors, p_Mod));
+        MenuComponents.add(new MenuComponentModList("UI", Module.ModuleType.UI, 560, 3, "mouse", p_Colors, p_Mod));
+        MenuComponents.add(new MenuComponentModList("World", Module.ModuleType.WORLD, 670, 3, "blockimg", p_Colors, p_Mod));
+        MenuComponents.add(new MenuComponentModList("Highway", Module.ModuleType.HIGHWAY, 780, 3, "Highwayimg", p_Colors, p_Mod));
+        //   MenuComponents.add(new MenuComponentModList("Bot", Module.ModuleType.BOT, 780, 3, "robotimg", p_Colors));
+        MenuComponents.add(new MenuComponentModList("Donate!", Module.ModuleType.DONATE, 230, 203, "Highwayimg", p_Colors, p_Mod));
+        MenuComponents.add(new MenuComponentModList("Schematica", Module.ModuleType.SCHEMATICA, 10, 203, "robotimg", p_Colors, p_Mod));
 
         MenuComponentPresetsList presetList = null;
 
-        MenuComponents.add(presetList = new MenuComponentPresetsList("Presets", ModuleType.SCHEMATICA, 120, 203, "robotimg", p_Colors, p_Mod));
+        MenuComponents.add(presetList = new MenuComponentPresetsList("Presets", Module.ModuleType.SCHEMATICA, 120, 203, "robotimg", p_Colors, p_Mod));
 
         PresetsManager.Get().InitalizeGUIComponent(presetList);
 
@@ -122,13 +114,7 @@ public class ClickGuiScreen extends SalGuiScreen
 
     private ClickGuiModule ClickGuiMod;
 
-    @Override
-    public boolean doesGuiPauseGame()
-    {
-        return false;
-    }
-
-    @Override
+//    @Override
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
     {
         for (MenuComponent l_Menu : MenuComponents)
@@ -140,7 +126,7 @@ public class ClickGuiScreen extends SalGuiScreen
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
-    @Override
+//    @Override
     public void mouseReleased(int mouseX, int mouseY, int state)
     {
         for (MenuComponent l_Menu : MenuComponents)
@@ -151,55 +137,37 @@ public class ClickGuiScreen extends SalGuiScreen
         super.mouseReleased(mouseX, mouseY, state);
     }
 
-    @Override
-    public void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick)
+//    @Override
+    public void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick, int prevMouseX, int prevMouseY)
     {
         for (MenuComponent l_Menu : MenuComponents)
         {
             l_Menu.MouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
         }
 
-        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, prevMouseX, prevMouseY);
     }
 
-    @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+//    @Override
+    public void drawScreen(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)
     {
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        super.render(matrix, mouseX, mouseY, partialTicks);
 
-        final ScaledResolution res = new ScaledResolution(mc);
+        final ScaledResolution res = new ScaledResolution(client);
 
         if (!_snowList.isEmpty() && ClickGuiMod.Snowing.getValue())
         {
             _snowList.forEach(snow -> snow.Update(res));
         }
 
-        if (Watermark != null && ClickGuiMod.Watermark.getValue())
-        {
-            GlStateManager.pushMatrix();
-            RenderHelper.enableGUIStandardItemLighting();
-
-            mc.renderEngine.bindTexture(Watermark.GetResourceLocation());
-            GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-            GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-
-            GlStateManager.enableTexture2D();
-            GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
-            RenderUtil.drawTexture(0, res.getScaledHeight() - Watermark.GetHeight() - 5, Watermark.GetWidth() / 2,
-                    Watermark.GetHeight() / 2, 0, 0, 1, 1);
-
-            GlStateManager.popMatrix();
-        }
-
         GlStateManager.pushMatrix();
 
         GlStateManager.disableRescaleNormal();
-        RenderHelper.disableStandardItemLighting();
 
         MenuComponent l_LastHovered = null;
 
         for (MenuComponent l_Menu : MenuComponents)
-            if (l_Menu.Render(mouseX, mouseY, true, AllowsOverflow(), OffsetY))
+            if (l_Menu.Render(matrix, mouseX, mouseY, true, AllowsOverflow(), OffsetY))
                 l_LastHovered = l_Menu;
 
         if (l_LastHovered != null)
@@ -209,29 +177,14 @@ public class ClickGuiScreen extends SalGuiScreen
             MenuComponents.add(l_LastHovered);
         }
 
-        RenderHelper.enableGUIStandardItemLighting();
-
         GlStateManager.enableRescaleNormal();
         GlStateManager.popMatrix();
-
-        int l_Scrolling = Mouse.getEventDWheel();
-
-        /// up
-        if (l_Scrolling > 0)
-        {
-            OffsetY = Math.max(0, OffsetY-1);
-        }
-        /// down
-        else if (l_Scrolling < 0)
-        {
-            OffsetY = Math.min(100, OffsetY + 1);
-        }
     }
 
-    @Override
+//    @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException
     {
-        super.keyTyped(typedChar, keyCode);
+        super.keyPressed(typedChar, keyCode, 0);
 
         for (MenuComponent l_Menu : MenuComponents)
         {
@@ -239,12 +192,12 @@ public class ClickGuiScreen extends SalGuiScreen
         }
     }
 
-    @Override
+//    @Override
     public void onGuiClosed()
     {
-        super.onGuiClosed();
+        super.onClose();
 
-        if (ClickGuiMod.isEnabled())
+        if (ClickGuiMod.isToggled())
             ClickGuiMod.toggle();
 
         /// Save Settings

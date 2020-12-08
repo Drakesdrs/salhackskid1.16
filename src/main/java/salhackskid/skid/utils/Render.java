@@ -5,21 +5,25 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormats;
+import org.lwjgl.opengl.GL11;
+
+import static org.lwjgl.opengl.GL11.*;
 
 public final class Render {
 
     public static final int[] charWidth = new int[256];
     public static boolean unicodeFlag;
     public static final byte[] glyphWidth = new byte[65536];
+    static MinecraftClient mc = MinecraftClient.getInstance();
 
     public static float getStringWidth(String p_Name)
     {
-        HudModule l_Hud = (HudModule)ModuleManager.Get().GetMod(HudModule.class);
+        return gsw(p_Name);
+    }
 
-        if (l_Hud != null && !l_Hud.CustomFont.getValue())
-            return gsw(p_Name);
-
-        return SalHack.GetFontManager().GetStringWidth(p_Name);
+    public static float getStringHeight(String name)
+    {
+        return mc.textRenderer.fontHeight;
     }
 
     public static int gsw(String text) {
@@ -97,5 +101,35 @@ public final class Render {
         tessellator.draw();
         GlStateManager.enableTexture();
         GlStateManager.disableBlend();
+    }
+
+    public static void drawLine(float x, float y, float x1, float y1, float thickness, int hex)
+    {
+        float red = (hex >> 16 & 0xFF) / 255.0F;
+        float green = (hex >> 8 & 0xFF) / 255.0F;
+        float blue = (hex & 0xFF) / 255.0F;
+        float alpha = (hex >> 24 & 0xFF) / 255.0F;
+
+        GlStateManager.pushMatrix();
+        GlStateManager.disableTexture();
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlphaTest();
+        GlStateManager.blendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.shadeModel(GL_SMOOTH);
+        glLineWidth(thickness);
+        glEnable(GL_LINE_SMOOTH);
+        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+        final Tessellator tessellator = Tessellator.getInstance();
+        final BufferBuilder bufferbuilder = tessellator.getBuffer();
+        bufferbuilder.begin(GL_LINE_STRIP, VertexFormats.POSITION_COLOR);
+        bufferbuilder.vertex((double) x, (double) y, (double) 0).color(red, green, blue, alpha).next();
+        bufferbuilder.vertex((double) x1, (double) y1, (double) 0).color(red, green, blue, alpha).next();
+        tessellator.draw();
+        GlStateManager.shadeModel(GL_FLAT);
+        glDisable(GL_LINE_SMOOTH);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlphaTest();
+        GlStateManager.enableTexture();
+        GlStateManager.popMatrix();
     }
 }

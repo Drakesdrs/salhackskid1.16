@@ -21,4 +21,20 @@ public class ModuleManager extends Object{
         }
         return null;
     }
+
+    public static final List<Module> getModuleList(Module.ModuleType p_Type)
+    {
+        List<Module> list = new ArrayList<>();
+        for (Module module : mods)
+        {
+            if (module.getType().equals(p_Type))
+            {
+                list.add(module);
+            }
+        }
+        // Organize alphabetically
+        list.sort(Comparator.comparing(Module::getDisplayName));
+
+        return list;
+    }
 }

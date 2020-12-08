@@ -3,21 +3,19 @@ package salhackskid.skid.gui;
 import java.io.IOException;
 
 import net.minecraft.client.MinecraftClient;
-import org.lwjgl.glfw.GLFW;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.Text;
 import net.minecraft.client.gui.screen.Screen;
 
 public class SalGuiScreen extends Screen
 {
-    // private NoSlowModule NoSlow = null;
-
     private boolean InventoryMoveEnabled()
     {
-        /*if (NoSlow == null)
-            NoSlow = (NoSlowModule)SalHack.INSTANCE.getModuleManager().find(NoSlowModule.class);
-
-        return NoSlow != null && NoSlow.InventoryMove.getValue();*/
         return true;
+    }
+
+    public SalGuiScreen() {
+        super(Text.of("hax"));
     }
 
     public static void UpdateRotationPitch(float p_Amount)
@@ -45,26 +43,14 @@ public class SalGuiScreen extends Screen
     }
 
     @Override
-    public void openScreen(int mouseX, int mouseY, float partialTicks)
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float tickDelta)
     {
-        super.openScreen(mouseX, mouseY, partialTicks);
+        super.render(matrix, mouseX, mouseY, tickDelta);
     }
 
     @Override
-    public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
-    {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
+    public void mouse() {
+
     }
 
-    @Override
-    public void mouseReleased(int mouseX, int mouseY, int state)
-    {
-        super.mouseReleased(mouseX, mouseY, state);
-    }
-
-    @Override
-    public void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, int prevMouseX, int prevMouseY)
-    {
-        super.mouseDragged(mouseX, mouseY, clickedMouseButton, prevMouseX, prevMouseY);
-    }
 }

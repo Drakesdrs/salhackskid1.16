@@ -1,14 +1,14 @@
-package me.ionar.salhack.gui.click.component.item;
+package salhackskid.skid.settings.base;
 
-import org.lwjgl.input.Keyboard;
-
-import me.ionar.salhack.gui.click.component.listeners.ComponentItemListener;
-import me.ionar.salhack.main.SalHack;
-import me.ionar.salhack.module.Module;
 import me.ionar.salhack.util.Timer;
-import me.ionar.salhack.util.render.RenderUtil;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.Keyboard;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.InputUtil;
+import salhackskid.skid.SalHackSkid;
+import salhackskid.skid.gui.hud.ComponentItem;
+import salhackskid.skid.module.Module;
+import salhackskid.skid.settings.listeners.ComponentItemListener;
+import salhackskid.skid.utils.Render;
 
 public class ComponentItemKeybind extends ComponentItem
 {
@@ -17,6 +17,7 @@ public class ComponentItemKeybind extends ComponentItem
     private String LastKey = "";
     private Timer timer = new Timer();
     private String DisplayString = "";
+    MinecraftClient mc = MinecraftClient.getInstance();
     
     public ComponentItemKeybind(Module p_Mod, String p_DisplayText, String p_Description, int p_Flags, int p_State, ComponentItemListener p_Listener, float p_Width, float p_Height)
     {
@@ -34,17 +35,17 @@ public class ComponentItemKeybind extends ComponentItem
 
         String l_DisplayText = "Keybind " + Mod.getKey();
         
-        if (HasState(ComponentItem.Hovered) && RenderUtil.getStringWidth(l_DisplayText) > GetWidth() - 3)
+        if (HasState(ComponentItem.Hovered) && Render.getStringWidth(l_DisplayText) > GetWidth() - 3)
         {
             if (DisplayString == null)
                 DisplayString = "Keybind " + Mod.getKey() + " ";
 
             l_DisplayText = DisplayString;
-            float l_Width = RenderUtil.getStringWidth(l_DisplayText);
+            float l_Width = Render.getStringWidth(l_DisplayText);
 
             while (l_Width > GetWidth() - 3)
             {
-                l_Width = RenderUtil.getStringWidth(l_DisplayText);
+                l_Width = Render.getStringWidth(l_DisplayText);
                 l_DisplayText = l_DisplayText.substring(0, l_DisplayText.length() - 1);
             }
 
@@ -62,11 +63,11 @@ public class ComponentItemKeybind extends ComponentItem
         else
             DisplayString = null;
 
-        float l_Width = RenderUtil.getStringWidth(l_DisplayText);
+        float l_Width = Render.getStringWidth(l_DisplayText);
 
         while (l_Width > GetWidth() - 3)
         {
-            l_Width = RenderUtil.getStringWidth(l_DisplayText);
+            l_Width = Render.getStringWidth(l_DisplayText);
             l_DisplayText = l_DisplayText.substring(0, l_DisplayText.length() - 1);
         }
 
@@ -93,7 +94,7 @@ public class ComponentItemKeybind extends ComponentItem
         else if (p_MouseButton == 2)
         {
         	Mod.setKey("NONE");
-        	SalHack.SendMessage("Unbinded the module: " + Mod.getDisplayName());
+        	SalHackSkid.SendMessage("Unbinded the module: " + Mod.getDisplayName());
         	Listening = false;
         }
     }
@@ -103,7 +104,7 @@ public class ComponentItemKeybind extends ComponentItem
     {
         if (Listening)
         {
-            String l_Key = String.valueOf(Keyboard.getKeyName(keyCode)).toUpperCase();
+            String l_Key = String.valueOf(InputUtil.isKeyPressed(mc.getWindow().getHandle(), keyCode)).toUpperCase();
 
             if (l_Key.length() < 1)
             {
@@ -118,21 +119,21 @@ public class ComponentItemKeybind extends ComponentItem
             
             if (!l_Key.equals("NONE") && !l_Key.contains("CONTROL") && !l_Key.contains("SHIFT") && !l_Key.contains("MENU"))
             {
-                if (GuiScreen.isAltKeyDown())
-                    l_Key = (Keyboard.isKeyDown(56) ? "LMENU" : "RMENU") + " + " + l_Key;
-                else if (GuiScreen.isCtrlKeyDown())
+                if (InputUtil.isKeyPressed(mc.getWindow().getHandle(), 56))
+                    l_Key = (InputUtil.isKeyPressed(mc.getWindow().getHandle(), 56) ? "LMENU" : "RMENU") + " + " + l_Key;
+                else if (InputUtil.isKeyPressed(mc.getWindow().getHandle(), 219) || InputUtil.isKeyPressed(mc.getWindow().getHandle(), 29) )
                 {
                     String l_CtrlKey = "";
                     
-                    if (Minecraft.IS_RUNNING_ON_MAC)
-                        l_CtrlKey = Keyboard.isKeyDown(219) ? "LCONTROL" : "RCONTROL";
+                    if (MinecraftClient.IS_SYSTEM_MAC)
+                        l_CtrlKey = InputUtil.isKeyPressed(mc.getWindow().getHandle(), 219) ? "LCONTROL" : "RCONTROL";
                     else
-                        l_CtrlKey = Keyboard.isKeyDown(29) ? "LCONTROL" : "RCONTROL";
+                        l_CtrlKey = InputUtil.isKeyPressed(mc.getWindow().getHandle(), 29) ? "LCONTROL" : "RCONTROL";
                     
                     l_Key = l_CtrlKey + " + " + l_Key;
                 }
-                else if (GuiScreen.isShiftKeyDown())
-                    l_Key = (Keyboard.isKeyDown(42) ? "LSHIFT" : "RSHIFT") + " + " + l_Key;
+                else if (InputUtil.isKeyPressed(mc.getWindow().getHandle(), 42))
+                    l_Key = (InputUtil.isKeyPressed(mc.getWindow().getHandle(), 42) ? "LSHIFT" : "RSHIFT") + " + " + l_Key;
             }
             
             LastKey = l_Key;
@@ -142,10 +143,10 @@ public class ComponentItemKeybind extends ComponentItem
     @Override
     public void Update()
     {
-        if (!Keyboard.getEventKeyState() && Listening && LastKey != "")
+        if (Listening && LastKey != "")
         {
             Mod.setKey(LastKey);
-            SalHack.SendMessage("Set the key of " + Mod.getDisplayName() + " to " + LastKey);
+            SalHackSkid.SendMessage("Set the key of " + Mod.getDisplayName() + " to " + LastKey);
             Listening = false;
         }
     }

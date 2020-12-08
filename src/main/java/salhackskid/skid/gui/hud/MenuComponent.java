@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
-import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.util.math.MatrixStack;
 import salhackskid.skid.module.gui.ClickGuiModule;
@@ -34,7 +33,6 @@ public class MenuComponent
     private boolean IsMaximizing = false;
     private float RemainingMaximizingY;
     private int MousePlayAnim;
-    private SalDynamicTexture BarTexture = null;
     private ColorsModule Colors;
     private ClickGuiModule ClickGUI;
     MinecraftClient mc = MinecraftClient.getInstance();
@@ -53,11 +51,6 @@ public class MenuComponent
         RemainingMaximizingY = 0;
         MousePlayAnim = 0;
 
-        if (p_Image != null)
-        {
-            BarTexture = ImageManager.Get().GetDynamicTexture(p_Image);
-        }
-
         Colors = p_Colors;
         ClickGUI = p_ClickGui;
     }
@@ -70,7 +63,7 @@ public class MenuComponent
     final float BorderLength = 15.0f;
     final float Padding = 3;
 
-    public boolean Render(int p_MouseX, int p_MouseY, boolean p_CanHover, boolean p_AllowsOverflow, float p_OffsetY)
+    public boolean Render(MatrixStack matrix, int p_MouseX, int p_MouseY, boolean p_CanHover, boolean p_AllowsOverflow, float p_OffsetY)
     {
         if (Dragging)
         {
@@ -136,7 +129,7 @@ public class MenuComponent
         Render.drawRect(GetX(), GetY() + 13 - p_OffsetY, GetX() + GetWidth(), GetY() + 14 - p_OffsetY, 0x333cc4, 0xff); //horizontal top
         Render.drawRect(GetX(), GetY() + GetHeight() - 1, GetX() + GetWidth(), GetY() + GetHeight(), 0x333cc4, 0xff); //horizontal bottom
         Render.drawRect(GetX() + 1, GetY() + 1, GetX() + GetWidth() - 1, GetY() + GetHeight() - 1, 0x333cc4, 0x70); //complete
-        DrawableHelper.fill(matrix, GetX(), GetY() - p_OffsetY, GetX() + GetWidth(), GetY() + 13 - p_OffsetY, 0xff333cc4, 0xff333cc4); /// top
+        DrawableHelper.fill(matrix, (int) GetX(), (int) (GetY() - p_OffsetY), (int) (GetX() + GetWidth()), (int) (GetY() + 13 - p_OffsetY), 0xff333cc4); /// top
 
         if (!Minimized)
         {
@@ -148,7 +141,7 @@ public class MenuComponent
 
             for (ComponentItem l_Item : Items)
             {
-                l_Y = DisplayComponentItem(l_Item, l_Y, p_MouseX, p_MouseY, p_CanHover, false, IsMinimizing ? RemainingMinimizingY : (IsMaximizing ? RemainingMaximizingY : 0));
+                l_Y = DisplayComponentItem(matrix, l_Item, l_Y, p_MouseX, p_MouseY, p_CanHover, false, IsMinimizing ? RemainingMinimizingY : (IsMaximizing ? RemainingMaximizingY : 0));
 
                 float l_MenuY = Math.abs(Y - l_Y - BorderLength);
 
@@ -171,25 +164,18 @@ public class MenuComponent
             {
                 if (HoveredItem.GetDescription() != null && HoveredItem.GetDescription() != "")
                 {
-                    Render.drawRect(p_MouseX+15, p_MouseY, p_MouseX+19+Render.getStringWidth(HoveredItem.GetDescription()), p_MouseY + RenderUtil.getStringHeight(HoveredItem.GetDescription())+3, 0x90000000);
-                    RenderUtil.drawStringWithShadow(HoveredItem.GetDescription(), p_MouseX+17, p_MouseY, 0xFFFFFF);
+                    Render.drawRect(p_MouseX+15, p_MouseY, p_MouseX+19+Render.getStringWidth(HoveredItem.GetDescription()), p_MouseY + Render.getStringHeight(HoveredItem.GetDescription())+3, 0x000000, 0x90);
+                    textRenderer.drawWithShadow(matrix, HoveredItem.GetDescription(), p_MouseX+17, p_MouseY, 0xFFFFFF);
                 }
             }
 
             Height = Math.abs(Y - l_Y - 12);
         }
 
-        if (MousePlayAnim > 0)
-        {
-            MousePlayAnim--;
-
-            RenderUtil.DrawPolygon(p_MouseX, p_MouseY, MousePlayAnim, 360, 0x99FFFFFF);
-        }
-
         return p_CanHover && p_MouseX > GetX() && p_MouseX < GetX() + GetWidth() && p_MouseY > GetY()-p_OffsetY && p_MouseY < GetY()+GetHeight()-p_OffsetY;
     }
 
-    public float DisplayComponentItem(ComponentItem p_Item, float p_Y, int p_MouseX, int p_MouseY, boolean p_CanHover, boolean p_DisplayExtendedLine, final float p_MaxY)
+    public float DisplayComponentItem(MatrixStack matrix, ComponentItem p_Item, float p_Y, int p_MouseX, int p_MouseY, boolean p_CanHover, boolean p_DisplayExtendedLine, final float p_MaxY)
     {
         p_Y += p_Item.GetHeight();
 
@@ -198,7 +184,7 @@ public class MenuComponent
 
         if (p_Item.HasState(ComponentItem.Extended))
         {
-            RenderUtil.drawRect(X+1,p_Y,X+p_Item.GetWidth()-3,p_Y + RenderUtil.getStringHeight(p_Item.GetDisplayText()) + 3,0x080808);
+            Render.drawRect(X+1,p_Y,X+p_Item.GetWidth()-3,p_Y + Render.getStringHeight(p_Item.GetDisplayText()) + 3,0x080808, 0xff);
         }
 
         int l_Color = 0xFFFFFF;
@@ -210,7 +196,7 @@ public class MenuComponent
         if (l_Hovered)
         {
             if (!l_DropDown)
-                RenderUtil.drawGradientRect(GetX(), p_Y, GetX()+p_Item.GetWidth(), p_Y+11, 0x99040404, 0x99000000);
+                Render.drawRect(GetX(), p_Y, GetX()+p_Item.GetWidth(), p_Y+11, 0x040404, 0x99);
             l_Color = (p_Item.HasState(ComponentItem.Clicked) && !p_Item.HasFlag(ComponentItem.DontDisplayClickableHighlight)) ? GetTextColor() : l_Color;// - commented for issue #27
             HoveredItem = p_Item;
 
@@ -225,12 +211,12 @@ public class MenuComponent
         }
 
         if (l_DropDown)
-            DrawableHelper.fill(matrix, GetX(), p_Y, GetX()+p_Item.GetWidth(), p_Y+11, 0x99040404, 0x99000000);
+            DrawableHelper.fill(matrix, (int) GetX(), (int) p_Y, (int) (GetX()+p_Item.GetWidth()), (int) (p_Y+11), 0x99040404);
 
         if (p_Item.HasFlag(ComponentItem.RectDisplayAlways) || (p_Item.HasFlag(ComponentItem.RectDisplayOnClicked) && p_Item.HasState(ComponentItem.Clicked)))
-            RenderUtil.drawRect(GetX(), p_Y, GetX()+p_Item.GetCurrentWidth(), p_Y+11, p_Item.HasState(ComponentItem.Clicked) || p_Item.HasFlag(ComponentItem.DontDisplayClickableHighlight) ? GetColor() : GetColor());
+            Render.drawRect(GetX(), p_Y, GetX()+p_Item.GetCurrentWidth(), p_Y+11, p_Item.HasState(ComponentItem.Clicked) || p_Item.HasFlag(ComponentItem.DontDisplayClickableHighlight) ? GetColor() : GetColor(), 0xff);
 
-        DrawableHelper.drawStringWithShadow(matrix, ,p_Item.GetDisplayText(), X + Padding, p_Y, l_Color);
+        DrawableHelper.drawStringWithShadow(matrix, textRenderer, p_Item.GetDisplayText(), (int) (X + Padding), (int) p_Y, l_Color);
 
         /*if (p_Item.HasFlag(ComponentItem.HasValues))
         {
@@ -239,14 +225,14 @@ public class MenuComponent
 
         if (p_Item.HasState(ComponentItem.Extended) || p_DisplayExtendedLine)
         {
-            RenderUtil.drawLine(X + p_Item.GetWidth() - 1, p_Y, X + p_Item.GetWidth() - 1, p_Y + 11, 3, GetColor());
+            Render.drawLine(X + p_Item.GetWidth() - 1, p_Y, X + p_Item.GetWidth() - 1, p_Y + 11, 3, GetColor());
         }
 
         if (p_Item.HasState(ComponentItem.Extended))
         {
             for (ComponentItem l_ValItem : p_Item.DropdownItems)
             {
-                p_Y = DisplayComponentItem(l_ValItem, p_Y, p_MouseX, p_MouseY, p_CanHover, true, p_MaxY);
+                p_Y = DisplayComponentItem(matrix, l_ValItem, p_Y, p_MouseX, p_MouseY, p_CanHover, true, p_MaxY);
 
                 if (p_MaxY > 0)
                 {

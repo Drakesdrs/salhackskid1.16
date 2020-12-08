@@ -1,14 +1,15 @@
-package me.ionar.salhack.gui.click.component.item;
+package salhackskid.skid.settings.base;
 
 import java.math.BigDecimal;
 
-import org.lwjgl.input.Keyboard;
-
-import me.ionar.salhack.gui.click.component.listeners.ComponentItemListener;
-import me.ionar.salhack.module.Module;
-import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.Timer;
-import me.ionar.salhack.util.render.RenderUtil;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.InputUtil;
+import org.lwjgl.glfw.GLFW;
+import salhackskid.skid.gui.hud.ComponentItem;
+import salhackskid.skid.module.Value;
+import salhackskid.skid.settings.listeners.ComponentItemListener;
+import salhackskid.skid.utils.Render;
 
 public class ComponentItemValue extends ComponentItem
 {
@@ -17,9 +18,10 @@ public class ComponentItemValue extends ComponentItem
     private Timer timer = new Timer();
     private String DisplayString = "";
     private boolean _isEditingString = false;
+    MinecraftClient mc = MinecraftClient.getInstance();
 
     public ComponentItemValue(final Value p_Val, String p_DisplayText, String p_Description, int p_Flags, int p_State, ComponentItemListener p_Listener, float p_Width,
-            float p_Height)
+                              float p_Height)
     {
         super(p_DisplayText, p_Description, p_Flags, p_State, p_Listener, p_Width, p_Height);
         Val = p_Val;
@@ -91,17 +93,17 @@ public class ComponentItemValue extends ComponentItem
         {
             String l_DisplayText = Val.getName();
             
-            if (HasState(ComponentItem.Hovered) && RenderUtil.getStringWidth(l_DisplayText) > GetWidth() - 3)
+            if (HasState(ComponentItem.Hovered) && Render.getStringWidth(l_DisplayText) > GetWidth() - 3)
             {
                 if (DisplayString == null)
                     DisplayString = Val.getName();
 
                 l_DisplayText = DisplayString;
-                float l_Width = RenderUtil.getStringWidth(l_DisplayText);
+                float l_Width = Render.getStringWidth(l_DisplayText);
 
                 while (l_Width > GetWidth() - 3)
                 {
-                    l_Width = RenderUtil.getStringWidth(l_DisplayText);
+                    l_Width = Render.getStringWidth(l_DisplayText);
                     l_DisplayText = l_DisplayText.substring(0, l_DisplayText.length() - 1);
                 }
 
@@ -119,11 +121,11 @@ public class ComponentItemValue extends ComponentItem
             else
                 DisplayString = null;
 
-            float l_Width = RenderUtil.getStringWidth(l_DisplayText);
+            float l_Width = Render.getStringWidth(l_DisplayText);
 
             while (l_Width > GetWidth() - 3)
             {
-                l_Width = RenderUtil.getStringWidth(l_DisplayText);
+                l_Width = Render.getStringWidth(l_DisplayText);
                 l_DisplayText = l_DisplayText.substring(0, l_DisplayText.length() - 1);
             }
 
@@ -132,17 +134,17 @@ public class ComponentItemValue extends ComponentItem
 
         String l_DisplayText = Val.getName() + " " + (Val.getValue() == null ? "null" : Val.getValue().toString()) + " ";
         
-        if (HasState(ComponentItem.Hovered) && RenderUtil.getStringWidth(l_DisplayText) > GetWidth() - 3)
+        if (HasState(ComponentItem.Hovered) && Render.getStringWidth(l_DisplayText) > GetWidth() - 3)
         {
             if (DisplayString == null)
                 DisplayString = Val.getName() + " " + Val.getValue().toString() + " ";
 
             l_DisplayText = DisplayString;
-            float l_Width = RenderUtil.getStringWidth(l_DisplayText);
+            float l_Width = Render.getStringWidth(l_DisplayText);
 
             while (l_Width > GetWidth() - 3)
             {
-                l_Width = RenderUtil.getStringWidth(l_DisplayText);
+                l_Width = Render.getStringWidth(l_DisplayText);
                 l_DisplayText = l_DisplayText.substring(0, l_DisplayText.length() - 1);
             }
 
@@ -160,11 +162,11 @@ public class ComponentItemValue extends ComponentItem
         else
             DisplayString = null;
 
-        float l_Width = RenderUtil.getStringWidth(l_DisplayText);
+        float l_Width = Render.getStringWidth(l_DisplayText);
 
         while (l_Width > GetWidth() - 3)
         {
-            l_Width = RenderUtil.getStringWidth(l_DisplayText);
+            l_Width = Render.getStringWidth(l_DisplayText);
             l_DisplayText = l_DisplayText.substring(0, l_DisplayText.length() - 1);
         }
 
@@ -258,7 +260,7 @@ public class ComponentItemValue extends ComponentItem
     {
         if (_isEditingString)
         {
-            if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) || Keyboard.isKeyDown(Keyboard.KEY_RETURN))
+            if (InputUtil.isKeyPressed(mc.getWindow().getHandle(), GLFW.GLFW_KEY_ESCAPE) || InputUtil.isKeyPressed(mc.getWindow().getHandle(), GLFW.GLFW_KEY_ENTER))
             {
                 _isEditingString = false;
                 return;
@@ -269,7 +271,7 @@ public class ComponentItemValue extends ComponentItem
             if (string == null)
                 return;
             
-            if (Keyboard.isKeyDown(Keyboard.KEY_BACK))
+            if (InputUtil.isKeyPressed(mc.getWindow().getHandle(), GLFW.GLFW_KEY_LEFT))
             {
                 if (string.length() > 0)
                     string = string.substring(0, string.length() - 1);

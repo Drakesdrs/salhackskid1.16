@@ -18,8 +18,11 @@
 package salhackskid.skid.mixins;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.MovementType;
 import net.minecraft.util.math.Vec3d;
@@ -28,6 +31,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import salhackskid.skid.SalHackSkid;
+import salhackskid.skid.event.EventDrawContainer;
 import salhackskid.skid.event.EventPlayerMove;
 import salhackskid.skid.event.EventTick;
 
@@ -50,5 +54,13 @@ public class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
     public void move(MovementType movementType_1, Vec3d vec3d_1, CallbackInfo info) {
         EventPlayerMove event = new EventPlayerMove(movementType_1, vec3d_1);
         SalHackSkid.eventBus.post(event);
+    }
+
+    @Inject(at = @At("RETURN"), method = "render")
+    public void render(MatrixStack matrix, int mouseX, int mouseY, float delta, CallbackInfo info) {
+        EventDrawContainer event = new EventDrawContainer(
+                (HandledScreen<?>) MinecraftClient.getInstance().currentScreen, mouseX, mouseY, matrix); // hmm // hmm?
+        SalHackSkid.eventBus.post(event);
+        if (event.isCancelled()) info.cancel();
     }
 }

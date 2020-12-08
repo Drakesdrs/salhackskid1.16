@@ -1,5 +1,6 @@
 package salhackskid.skid.settings.base;
 
+import salhackskid.skid.gui.hud.ComponentItem;
 import salhackskid.skid.module.Module;
 import salhackskid.skid.settings.listeners.ComponentItemListener;
 

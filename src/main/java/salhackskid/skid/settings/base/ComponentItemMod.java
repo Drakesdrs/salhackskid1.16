@@ -1,8 +1,9 @@
-package me.ionar.salhack.gui.click.component.item;
+package salhackskid.skid.settings.base;
 
-import me.ionar.salhack.gui.click.component.listeners.ComponentItemListener;
-import me.ionar.salhack.module.Module;
-import me.ionar.salhack.util.render.RenderUtil;
+import salhackskid.skid.gui.hud.ComponentItem;
+import salhackskid.skid.module.Module;
+import salhackskid.skid.settings.listeners.ComponentItemListener;
+import salhackskid.skid.utils.Render;
 
 public class ComponentItemMod extends ComponentItem
 {
@@ -19,11 +20,11 @@ public class ComponentItemMod extends ComponentItem
     {
         String l_DisplayText = Mod.getDisplayName();
         
-        float l_Width = RenderUtil.getStringWidth(l_DisplayText);
+        float l_Width = Render.getStringWidth(l_DisplayText);
         
         while (l_Width > GetWidth())
         {
-            l_Width = RenderUtil.getStringWidth(l_DisplayText);
+            l_Width = Render.getStringWidth(l_DisplayText);
             l_DisplayText = l_DisplayText.substring(0, l_DisplayText.length()-1);
         }
         
@@ -45,7 +46,7 @@ public class ComponentItemMod extends ComponentItem
     public boolean HasState(int p_State)
     {
         if ((p_State & ComponentItem.Clicked) != 0)
-            return Mod.isEnabled();
+            return Mod.isToggled();
         
         return super.HasState(p_State);
     }

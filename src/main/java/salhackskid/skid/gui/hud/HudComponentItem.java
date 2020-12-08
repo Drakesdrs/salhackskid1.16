@@ -10,6 +10,7 @@ import java.util.Map;
 import com.google.gson.Gson;
 
 import net.minecraft.client.MinecraftClient;
+import salhackskid.skid.gui.managers.CommandManager;
 import salhackskid.skid.gui.managers.HudManager;
 import salhackskid.skid.module.Value;
 import salhackskid.skid.utils.Render;
@@ -414,7 +415,7 @@ public class HudComponentItem
         if (p_Save)
         {
             HudManager.Get().ScheduleSave(this);
-            me.ionar.salhack.managers.CommandManager.Get().Reload();
+            CommandManager.Get().Reload();
         }
     }
 }

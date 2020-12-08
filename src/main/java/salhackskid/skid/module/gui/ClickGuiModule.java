@@ -1,5 +1,6 @@
 package salhackskid.skid.module.gui;
 
+import salhackskid.skid.gui.ClickGuiScreen;
 import salhackskid.skid.module.Module;
 import salhackskid.skid.module.ModuleManager;
 import salhackskid.skid.module.Value;
