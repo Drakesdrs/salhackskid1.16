@@ -48,9 +48,9 @@ public class SalGuiScreen extends Screen
         super.render(matrix, mouseX, mouseY, tickDelta);
     }
 
-    @Override
-    public void mouse() {
-
-    }
+//    @Override
+//    public void mouse() {
+//
+//    }
 
 }

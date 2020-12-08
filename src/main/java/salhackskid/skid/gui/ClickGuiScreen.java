@@ -138,15 +138,15 @@ public class ClickGuiScreen extends SalGuiScreen
     }
 
 //    @Override
-    public void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick, int prevMouseX, int prevMouseY)
-    {
-        for (MenuComponent l_Menu : MenuComponents)
-        {
-            l_Menu.MouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
-        }
-
-        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, prevMouseX, prevMouseY);
-    }
+//    public void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick, int prevMouseX, int prevMouseY)
+//    {
+//        for (MenuComponent l_Menu : MenuComponents)
+//        {
+//            l_Menu.MouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+//        }
+//
+//        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, prevMouseX, prevMouseY);
+//    }
 
 //    @Override
     public void drawScreen(MatrixStack matrix, int mouseX, int mouseY, float partialTicks)

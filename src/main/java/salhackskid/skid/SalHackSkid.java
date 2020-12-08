@@ -22,13 +22,30 @@ public class SalHackSkid implements ModInitializer {
 
     static MinecraftClient mc = MinecraftClient.getInstance();
 
+    private static ModuleManager m_ModuleManager = new ModuleManager();
+    private static HudManager m_HudManager = new HudManager();
+    private static DirectoryManager m_DirectoryManager = new DirectoryManager();
+    private static CommandManager m_CommandManager = new CommandManager();
+    private static PresetsManager m_PresetsManager = new PresetsManager();
+
     @Override
     public void onInitialize() {
-        System.out.println("Initializing SalHackSkid 1.16 :)");
-        for (Module m : ModuleManager.getModules()) {
-            m.init();
-            m.setToggled(true);
-        }
+        Init();
+    }
+
+
+
+    public static void Init()
+    {
+        System.out.println("initalizing salhack object (all static fields)");
+        m_DirectoryManager.Init();
+
+        /// load before mods
+        m_PresetsManager.LoadPresets(); // must be before module init
+        m_ModuleManager.init();
+        m_HudManager.Init();
+        m_CommandManager.InitalizeCommands();
+
     }
 
     public static HudManager getHudManager() {
@@ -53,12 +70,4 @@ public class SalHackSkid implements ModInitializer {
             mc.inGameHud.getChatHud().addMessage(Text.of(string));
     }
 
-    public static void infoMessage(String s) {
-        try {
-            MinecraftClient.getInstance().inGameHud.getChatHud()
-                    .addMessage(new LiteralText(Formatting.GRAY + "" + s));
-        } catch (Exception e) {
-            System.out.println("[SHS1.16] INFO: " + s);
-        }
-    }
 }

@@ -10,14 +10,14 @@ import salhackskid.skid.utils.Render;
 
 public class GuiHudEditor extends SalGuiScreen
 {
-    public GuiHudEditor(HudEditorModule p_HudEditor)
-    {
-        super();
+//    public GuiHudEditor(HudEditorModule p_HudEditor)
+//    {
+//        super();
+//
+//        HudEditor = p_HudEditor;
+//    }
 
-        HudEditor = p_HudEditor;
-    }
-
-    private HudEditorModule HudEditor;
+//    private HudEditorModule HudEditor;
     private boolean Clicked = false;
     private boolean Dragging = false;
     private int ClickMouseX = 0;
@@ -69,63 +69,63 @@ public class GuiHudEditor extends SalGuiScreen
         GL11.glPopMatrix();
     }
 
-    @Override
-    public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
-    {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
+//    @Override
+//    public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
+//    {
+//        super.mouseClicked(mouseX, mouseY, mouseButton);
+//
+//        for (HudComponentItem l_Item : HudManager.Get().Items)
+//        {
+//            if (!l_Item.IsHidden())
+//            {
+//                if (l_Item.OnMouseClick(mouseX, mouseY, mouseButton))
+//                    return;
+//            }
+//        }
+//
+//        Clicked = true;
+//        ClickMouseX = mouseX;
+//        ClickMouseY = mouseY;
+//    }
 
-        for (HudComponentItem l_Item : HudManager.Get().Items)
-        {
-            if (!l_Item.IsHidden())
-            {
-                if (l_Item.OnMouseClick(mouseX, mouseY, mouseButton))
-                    return;
-            }
-        }
+//    @Override
+//    public void mouseReleased(int mouseX, int mouseY, int state)
+//    {
+//        super.mouseReleased(mouseX, mouseY, state);
+//
+//        HudManager.Get().Items.forEach(p_Item ->
+//        {
+//            if (!p_Item.IsHidden())
+//            {
+//                p_Item.OnMouseRelease(mouseX, mouseY, state);
+//
+//                if (p_Item.IsSelected())
+//                    p_Item.SetMultiSelectedDragging(true);
+//                else
+//                    p_Item.SetMultiSelectedDragging(false);
+//            }
+//        });
+//
+//        Clicked = false;
+//    }
 
-        Clicked = true;
-        ClickMouseX = mouseX;
-        ClickMouseY = mouseY;
-    }
-
-    @Override
-    public void mouseReleased(int mouseX, int mouseY, int state)
-    {
-        super.mouseReleased(mouseX, mouseY, state);
-
-        HudManager.Get().Items.forEach(p_Item ->
-        {
-            if (!p_Item.IsHidden())
-            {
-                p_Item.OnMouseRelease(mouseX, mouseY, state);
-
-                if (p_Item.IsSelected())
-                    p_Item.SetMultiSelectedDragging(true);
-                else
-                    p_Item.SetMultiSelectedDragging(false);
-            }
-        });
-
-        Clicked = false;
-    }
-
-    @Override
-    public void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick)
-    {
-        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
-    }
-
-    @Override
-    public void onGuiClosed()
-    {
-        super.onClose();
-
-        if (HudEditor.isEnabled())
-            HudEditor.toggle();
-
-        Clicked = false;
-        Dragging = false;
-        ClickMouseX = 0;
-        ClickMouseY = 0;
-    }
+//    @Override
+//    public void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick)
+//    {
+//        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
+//    }
+//
+//    @Override
+//    public void onGuiClosed()
+//    {
+//        super.onClose();
+//
+//        if (HudEditor.isEnabled())
+//            HudEditor.toggle();
+//
+//        Clicked = false;
+//        Dragging = false;
+//        ClickMouseX = 0;
+//        ClickMouseY = 0;
+//    }
 }

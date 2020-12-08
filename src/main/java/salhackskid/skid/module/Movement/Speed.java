@@ -1,4 +1,4 @@
-package salhackskid.skid.module.Movement;
+package salhackskid.skid.module.movement;
 
 import me.zero.alpine.listener.EventHandler;
 import me.zero.alpine.listener.Listener;
@@ -6,6 +6,11 @@ import salhackskid.skid.event.EventTick;
 import salhackskid.skid.module.Module;
 
 public class Speed extends Module {
+
+    public Speed() {
+        super("Speed", new String[]
+                { "Speed", "Speed" }, "speeeed", "NONE", -1, ModuleType.MOVEMENT);
+    }
 
      @EventHandler
      private Listener<EventTick> onTick = new Listener<>(p_Event -> {
